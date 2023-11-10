@@ -2,6 +2,94 @@ import base64
 import argparse
 import requests
 
+KIERRATYS_MATERIAL_TYPES = {
+  "count": 20,
+  "next": None,
+  "previous": None,
+  "results": [
+    {
+      "code": 120,
+      "name": "End-of-life textiles"
+    },
+    {
+      "code": 119,
+      "name": "Construction Waste"
+    },
+    {
+      "code": 118,
+      "name": "Impregnated Wood"
+    },
+    {
+      "code": 117,
+      "name": "Wood"
+    },
+    {
+      "code": 116,
+      "name": "Lamps"
+    },
+    {
+      "code": 115,
+      "name": "Car Batteries"
+    },
+    {
+      "code": 114,
+      "name": "Other Waste"
+    },
+    {
+      "code": 113,
+      "name": "Textiles"
+    },
+    {
+      "code": 111,
+      "name": "Plastic"
+    },
+    {
+      "code": 110,
+      "name": "Portable accumulators and batteries"
+    },
+    {
+      "code": 109,
+      "name": "Electronic Devices"
+    },
+    {
+      "code": 108,
+      "name": "Dangerous Waste"
+    },
+    {
+      "code": 107,
+      "name": "Glass"
+    },
+    {
+      "code": 106,
+      "name": "Metal"
+    },
+    {
+      "code": 105,
+      "name": "Cardboard Packaging"
+    },
+    {
+      "code": 104,
+      "name": "Cardboard"
+    },
+    {
+      "code": 103,
+      "name": "Paper"
+    },
+    {
+      "code": 102,
+      "name": "Energy Waste"
+    },
+    {
+      "code": 101,
+      "name": "Garden Waste"
+    },
+    {
+      "code": 100,
+      "name": "Mixed waste"
+    }
+  ]
+}
+
 RECYCLING_STREAMS = """
 Automotive batteries (lead acid)
 Carton packaging
