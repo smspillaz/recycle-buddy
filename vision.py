@@ -13,7 +13,6 @@ Garden waste
 Glass packaging
 Hazardous waste
 Impregnated wood
-Kartongförpackningar
 Lamps
 Metals
 Mixed waste
