@@ -1,6 +1,8 @@
 import base64
 import argparse
 import requests
+import json
+import aiohttp
 
 KIERRATYS_MATERIAL_TYPES = {
   "count": 20,
@@ -117,6 +119,56 @@ Wood
 def encode_image(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
+
+
+async def analyze_image(base64_image, api_key):
+    client = aiohttp.ClientSession()
+
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {api_key}"
+    }
+
+    payload = {
+        "model": "gpt-4-vision-preview",
+        "messages": [
+            {
+                "role": "system",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": (
+                            "You are a helpful assistant that helps to identify what can be recycled in an image. "
+                            f"Here are a list of available recycling streams: {RECYCLING_STREAMS}"
+                            "\n"
+                            "You will tell what is in the image. Tell me what streams it can be separated into. Output the result as a JSON list of strings"
+                        )
+                    }
+                ]
+            },
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": ""
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                        "url": f"data:image/jpeg;base64,{base64_image}"
+                        }
+                    }
+                ]
+            }
+        ],
+        "max_tokens": 300
+    }
+
+    async with client.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload) as resp:
+        response = await resp.json()
+
+    return response["choices"][0]["message"]["content"].replace("json```", "").replace("```", "")
 
 
 def main():
