@@ -1,6 +1,7 @@
 import asyncio
 import ssl
 from flask import Flask, request
+from flask_cors import CORS
 import os
 from vision import encode_image, analyze_image
 from hsy import THREADED_HSY_OPTIONS
@@ -9,6 +10,7 @@ import base64
 
 
 app = Flask(__name__)
+CORS(app)
 
 STREAMS = {
     x["name"]: x["options"]
