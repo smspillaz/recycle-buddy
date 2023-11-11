@@ -1,0 +1,267 @@
+{
+    "Clothes": {
+      "selling": [
+        {
+          "name": "facebook market place",
+          "website": "facebook.com/espoo_market_place",
+          "location": "Espoo"
+        },
+        {
+          "name": "otaniemi buy and sell",
+          "website": "https://t.me/aaltomarketplace",
+          "location": "Otaniemi"
+        }
+      ],
+      "donating": [
+        {
+          "name": "UFF espoo",
+          "website": "https://uff.fi/aukioloajat-ja-yhteystiedot/",
+          "location": "Matinlyla"
+        }
+      ],
+      "events": [
+        {
+          "name": "Fashion Expo",
+          "website": "https://fashionexpo.com",
+          "location": "City Center"
+        },
+        {
+          "name": "Swap-a-Palooza",
+          "website": "https://swapapalooza.net",
+          "location": "Community Hall"
+        }
+      ]
+    },
+    "Sports": {
+      "selling": [
+        {
+          "name": "Sporty Finds",
+          "website": "https://sportyfinds.com",
+          "location": "City Center"
+        },
+        {
+          "name": "Second Chance Sports",
+          "website": "https://secondchancesports.org",
+          "location": "Green Park"
+        }
+      ],
+      "donating": [
+        {
+          "name": "PlayItForward Foundation",
+          "website": "https://playitforward.org/donate",
+          "location": "Sportsville"
+        }
+      ],
+      "events": [
+        {
+          "name": "Sports Fest",
+          "website": "https://sportsfest.com",
+          "location": "Sports Arena"
+        },
+        {
+          "name": "Fitness Fair",
+          "website": "https://fitnessfair.net",
+          "location": "Wellness Center"
+        }
+      ]
+    },
+    "Animal Accessories": {
+      "selling": [
+        {
+          "name": "Pet Haven Market",
+          "website": "https://pethavenmarket.com",
+          "location": "Petropolis"
+        },
+        {
+          "name": "Furry Friends Bazaar",
+          "website": "https://furryfriendsbazaar.org",
+          "location": "Animaland"
+        }
+      ],
+      "donating": [
+        {
+          "name": "Animal Aid Center",
+          "website": "https://animalaidcenter.org/donate",
+          "location": "Pawsville"
+        }
+      ],
+      "events": [
+        {
+          "name": "Pet Expo",
+          "website": "https://petexpo.net",
+          "location": "Pet Convention Center"
+        },
+        {
+          "name": "Animal Charity Gala",
+          "website": "https://animalcharitygala.com",
+          "location": "Wildlife Sanctuary"
+        }
+      ]
+    },
+    "Children Toys": {
+      "selling": [
+        {
+          "name": "Toy Treasures",
+          "website": "https://toytreasures.com",
+          "location": "Toyland"
+        },
+        {
+          "name": "Kids' Corner Store",
+          "website": "https://kidscornerstore.net",
+          "location": "Playville"
+        }
+      ],
+      "donating": [
+        {
+          "name": "Toys for Tots",
+          "website": "https://toysfortots.org/donate",
+          "location": "Joy Junction"
+        }
+      ],
+      "events": [
+        {
+          "name": "Toy Fair",
+          "website": "https://toyfair.net",
+          "location": "Children's Pavilion"
+        },
+        {
+          "name": "Playtime Festival",
+          "website": "https://playtimefestival.com",
+          "location": "Playground Park"
+        }
+      ]
+    },
+    "Books": {
+      "selling": [
+        {
+          "name": "Book Bazaar",
+          "website": "https://bookbazaar.com",
+          "location": "Readers Haven"
+        },
+        {
+          "name": "Novel Nook",
+          "website": "https://novelnook.net",
+          "location": "Bookville"
+        }
+      ],
+      "donating": [
+        {
+          "name": "Bookworms Charity",
+          "website": "https://bookwormscharity.org/donate",
+          "location": "Literary Lane"
+        }
+      ],
+      "events": [
+        {
+          "name": "Literary Festival",
+          "website": "https://literaryfestival.net",
+          "location": "Bookworm Square"
+        },
+        {
+          "name": "Book Swap Extravaganza",
+          "website": "https://bookswapextravaganza.com",
+          "location": "Library Plaza"
+        }
+      ]
+    },
+    "Electronics": {
+      "selling": [
+        {
+          "name": "Gadget Galaxy",
+          "website": "https://gadgetgalaxy.com",
+          "location": "Tech Plaza"
+        },
+        {
+          "name": "Digital Deals",
+          "website": "https://digitaldeals.net",
+          "location": "ElectroniCity"
+        }
+      ],
+      "donating": [
+        {
+          "name": "Tech for Good",
+          "website": "https://techforgood.org/donate",
+          "location": "Innovation Island"
+        }
+      ],
+      "events": [
+        {
+          "name": "Tech Expo",
+          "website": "https://techexpo.net",
+          "location": "Tech Convention Center"
+        },
+        {
+          "name": "Gadget Showcase",
+          "website": "https://gadgetshowcase.com",
+          "location": "Digital District"
+        }
+      ]
+    },
+    "Furniture": {
+      "selling": [
+        {
+          "name": "FurniFinds",
+          "website": "https://furnifinds.com",
+          "location": "Home Haven"
+        },
+        {
+          "name": "Second Home Furnishings",
+          "website": "https://secondhomefurnishings.org",
+          "location": "Livingville"
+        }
+      ],
+      "donating": [
+        {
+          "name": "Furniture for All",
+          "website": "https://furnitureforall.org/donate",
+          "location": "Comfort Corner"
+        }
+      ],
+      "events": [
+        {
+          "name": "Home Expo",
+          "website": "https://homeexpo.net",
+          "location": "Home Design Center"
+        },
+        {
+          "name": "Furniture Fair",
+          "website": "https://furniturefair.com",
+          "location": "Furnishings Plaza"
+        }
+      ]
+    },
+    "Home Appliances": {
+      "selling": [
+        {
+          "name": "Appliance Alley",
+          "website": "https://appliancealley.com",
+          "location": "Homeville"
+        },
+        {
+          "name": "Secondhand Home Tech",
+          "website": "https://secondhandhometech.org",
+          "location": "Tech Haven"
+        }
+      ],
+      "donating": [
+        {
+          "name": "Appliances for All",
+          "website": "https://appliancesforall.org/donate",
+          "location": "Techville"
+        }
+      ],
+      "events": [
+        {
+          "name": "Appliance Expo",
+          "website": "https://applianceexpo.net",
+          "location": "Home Tech Convention Center"
+        },
+        {
+          "name": "Smart Living Showcase",
+          "website": "https://smartlivingshowcase.com",
+          "location": "Appliance Plaza"
+        }
+      ]
+    }
+  }
+  
