@@ -21,11 +21,11 @@ async def get_data():
     base64_image = base64.b64encode(request.files["img"].read()).decode('utf-8')
 
     data = """
-        [
+    [
         "Textiles (reusable)",
         "Plastic packaging",
         "Paper"
-        ]
+    ]
 """
 
     data = await analyze_image(base64_image, api_key)
