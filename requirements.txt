@@ -1,4 +1,4 @@
 openai
-flask
+flask[async]
 requests
 aiohttp
