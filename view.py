@@ -1,44 +1,59 @@
 import asyncio
 import ssl
 from flask import Flask, request
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 import os
-from vision import encode_image, analyze_image
+from vision import encode_image, analyze_image, ITEM_CLASSIFICATION
 from hsy import THREADED_HSY_OPTIONS
 import json
 import base64
+import logging
 
 
 app = Flask(__name__)
 CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
-STREAMS = {
+logging.getLogger('flask_cors').level = logging.DEBUG
+
+WASTE_STREAMS = {
     x["name"]: x["options"]
     for x in THREADED_HSY_OPTIONS
 }
+ITEM_CLASSIFICATION_STREAMS = {
+    x["name"]: x["options"]
+    for x in ITEM_CLASSIFICATION
+}
 
-@app.route("/api/vision", methods=["POST", "GET"])
+@app.route("/api/waste", methods=["POST", "GET"])
 async def get_data():
-    print(request.files)
     base64_image = base64.b64encode(request.files["img"].read()).decode('utf-8')
 
-    data = """
-    [
-        "Textiles (reusable)",
-        "Plastic packaging",
-        "Paper"
-    ]
-"""
-
-    data = await analyze_image(base64_image, api_key)
+    data = await analyze_image(base64_image, api_key, mode="waste")
     data = json.loads(data)
 
     return [
         {
             "stream": d["stream"],
-            "options": STREAMS[d["stream"]],
+            "options": WASTE_STREAMS[d["stream"]],
             "instructions": d["instructions"]
-        } for d in data if d["stream"] in STREAMS
+        } for d in data if d["stream"] in WASTE_STREAMS
+    ]
+
+
+@app.route("/api/donate", methods=["POST", "GET"])
+async def get_data_donate():
+    base64_image = base64.b64encode(request.files["img"].read()).decode('utf-8')
+
+    data = await analyze_image(base64_image, api_key, mode="donate")
+    data = json.loads(data)
+
+    return [
+        {
+            "stream": d["stream"],
+            "options": ITEM_CLASSIFICATION_STREAMS[d["stream"]],
+            "instructions": d["instructions"]
+        } for d in data if d["stream"] in ITEM_CLASSIFICATION_STREAMS
     ]
 
 
