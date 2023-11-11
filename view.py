@@ -2,19 +2,27 @@ import asyncio
 import ssl
 from flask import Flask, request
 import os
-from vision import RECYCLING_STREAMS, KIERRATYS_MATERIAL_TYPES, encode_image
+from vision import RECYCLING_STREAMS, KIERRATYS_MATERIAL_TYPES, encode_image, analyze_image
+import json
+
 
 app = Flask(__name__)
 
-
-async def async_get_data():
-    await asyncio.sleep(1)
-    return 'Done!'
-
-
 @app.route("/api/vision")
 async def get_data():
-    data = await async_get_data()
+    base64_image = json.loads(request.data.decode())["img"]
+
+    data = """
+        [
+        "Textiles (reusable)",
+        "Plastic packaging",
+        "Paper"
+        ]
+"""
+
+    data = await analyze_image(base64_image, api_key)
+    data = json.loads(data)
+
     return data
 
 
