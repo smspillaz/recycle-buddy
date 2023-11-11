@@ -55,7 +55,7 @@ const ImageUpload = () => {
     <div>
       <AppBar position="static" color="primary">
         <Toolbar>
-          <Typography variant="h6">Uncle Sam and eco</Typography>
+          <Typography variant="h6">EcoScan</Typography>
         </Toolbar>
       </AppBar>
       <Container maxWidth="md" style={{ marginTop: '20px' }}>
