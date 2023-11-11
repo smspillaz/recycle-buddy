@@ -12,8 +12,8 @@ import './ImageUpload.css'; // Import a CSS file for additional styling
 
 const ImageUpload = () => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const [base64Image, setBase64Image] = useState(null);
-  const [responseMessage, setResponseMessage] = useState(null);
+  const [responseError, setResponseError] = useState(null);
+  const [responseStream, setResponseStream] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleImageChange = async (e) => {
@@ -23,36 +23,28 @@ const ImageUpload = () => {
     if (file) {
       setLoading(true);
 
-      const reader = new FileReader();
+      // The result property contains the data as a base64 encoded string
+      let data = new FormData();
+      data.append('img', file);
 
-      // Set up the FileReader callback
-      reader.onloadend = async () => {
-        // The result property contains the data as a base64 encoded string
-        const base64Result = reader.result;
-        setBase64Image(base64Result);
-
-        // Send base64 image to the server
-        try {
-          const response = await fetch('YOUR_API_ENDPOINT', {
+      // Send base64 image to the server
+      try {
+        const response = await fetch(
+          'http://localhost:8080/api/vision',
+          {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ base64Image: base64Result }),
-          });
+            body: data
+          }
+        );
 
-          const responseData = await response.json();
-          setResponseMessage(responseData.message);
-        } catch (error) {
-          console.error('Error uploading image:', error);
-          setResponseMessage('Error uploading image. Please try again.');
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      // Read the file as a data URL, triggering the onloadend callback
-      reader.readAsDataURL(file);
+        const responseData = await response.json();
+        setResponseStream(responseData);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        setResponseError('Error uploading image. Please try again.');
+      } finally {
+        setLoading(false);
+      }
 
       // Set the selected image for display
       setSelectedImage(URL.createObjectURL(file));
@@ -81,7 +73,29 @@ const ImageUpload = () => {
               {loading ? (
                 <CircularProgress style={{ marginTop: 10 }} />
               ) : (
-                responseMessage && <p>{responseMessage}</p>
+                <div>
+                  <div>
+                    {responseError && <p>{responseError}</p>}
+                  </div>
+                  <div>
+                    {responseStream && (
+                      <div style={{textAlign: "left"}}>
+                        {responseStream.map(({ stream, options, instructions }) => (
+                          <div>
+                            <ul>
+                              <li><a style={{fontWeight: 'bold'}}>{stream}</a>: {instructions}</li>
+                              <ul>
+                                {options.map(o => (
+                                  <li>{o}</li>
+                                ))}
+                              </ul>
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
               )}
             </div>
           )}
