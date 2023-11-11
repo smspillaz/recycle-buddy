@@ -122,15 +122,36 @@ def encode_image(image_path):
         return base64.b64encode(image_file.read()).decode('utf-8')
 
 
-async def analyze_image(base64_image, api_key):
+STREAMS_STR = '\n'.join(list(map(lambda x: x['name'], THREADED_HSY_OPTIONS)))
+DONATE_STREAMS_STR = '\n'.join(list(map(lambda x: x['name'], ITEM_CLASSIFICATION)))
+MODE_TEXTS = {
+    "waste": (
+        "You are a helpful assistant that helps to identify what can be recycled in an image. "
+        f"Here are a list of available recycling streams: {STREAMS_STR}"
+        "\n"
+        "You will tell what is in the image. Tell me what streams it can be separated into.\n"
+        "Output the likely streams as a JSON list of objects, "
+        "where each object has the stream name and instructions for how to separate the part that goes in the stream from the object."
+    ),
+    "donate": (
+        "You are a helpful assistant that helps to identify what can be donated or sold in an image. "
+        "Here is some information about donation and marketplace locations:\n"
+        "UFF: Is a Finnish version of the Salvation Army. They run collection points around the city where you can put old clothes or toys in donation bins\n"
+        f"Here are a list of available item types that are donatable: {DONATE_STREAMS_STR}"
+        "\n"
+        "You will tell what is in the image. Tell me what category it should be donated as.\n"
+        "Output the likely streams as a JSON list of objects, where stream key has the the stream name and the instructions key has some information about how to donate to that stream"
+    )
+}
+
+
+async def analyze_image(base64_image, api_key, mode="waste"):
     client = aiohttp.ClientSession()
 
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {api_key}"
     }
-
-    streams = '\n'.join(list(map(lambda x: x['name'], THREADED_HSY_OPTIONS)))
 
     payload = {
         "model": "gpt-4-vision-preview",
@@ -140,14 +161,7 @@ async def analyze_image(base64_image, api_key):
                 "content": [
                     {
                         "type": "text",
-                        "text": (
-                            "You are a helpful assistant that helps to identify what can be recycled in an image. "
-                            f"Here are a list of available recycling streams: {streams}"
-                            "\n"
-                            "You will tell what is in the image. Tell me what streams it can be separated into.\n"
-                            "Output the likely streams as a JSON list of objects, "
-                            "where each object has the stream name and instructions for how to separate the part that goes in the stream from the object."
-                        )
+                        "text": MODE_TEXTS[mode]
                     }
                 ]
             },
