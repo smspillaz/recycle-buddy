@@ -151,7 +151,7 @@ async def analyze_image(base64_image, api_key):
         "max_tokens": 300
     }
 
-    if os.environ("DEBUG", "0") != "1":
+    if os.environ.get("DEBUG", "0") != "1":
         async with client.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload) as resp:
             response = await resp.json()
             text_response = response["choices"][0]["message"]["content"].replace("\n", " ")
