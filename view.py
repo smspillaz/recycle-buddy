@@ -5,6 +5,7 @@ import os
 from vision import encode_image, analyze_image
 from hsy import THREADED_HSY_OPTIONS
 import json
+import base64
 
 
 app = Flask(__name__)
@@ -14,9 +15,10 @@ STREAMS = {
     for x in THREADED_HSY_OPTIONS
 }
 
-@app.route("/api/vision")
+@app.route("/api/vision", methods=["POST", "GET"])
 async def get_data():
-    base64_image = json.loads(request.data.decode())["img"]
+    print(request.files)
+    base64_image = base64.b64encode(request.files["img"].read()).decode('utf-8')
 
     data = """
         [
