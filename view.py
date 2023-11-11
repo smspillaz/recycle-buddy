@@ -1,5 +1,6 @@
 import asyncio
-from flask import Flask
+import ssl
+from flask import Flask, request
 import os
 from vision import RECYCLING_STREAMS, KIERRATYS_MATERIAL_TYPES, encode_image
 
