@@ -3,6 +3,10 @@ import argparse
 import requests
 import json
 import aiohttp
+import re
+import os
+
+from hsy import THREADED_HSY_OPTIONS, HSY_MAIN_TYPES
 
 KIERRATYS_MATERIAL_TYPES = {
   "count": 20,
@@ -92,28 +96,6 @@ KIERRATYS_MATERIAL_TYPES = {
   ]
 }
 
-RECYCLING_STREAMS = """
-Automotive batteries (lead acid)
-Carton packaging
-Construction waste
-Electrical equipments
-End-of-life textiles
-Energy waste
-Garden waste
-Glass packaging
-Hazardous waste
-Impregnated wood
-Lamps
-Metals
-Mixed waste
-Other waste
-Paper
-Plastic packaging
-Portable accumulators and batteries
-Textiles (reusable)
-Wood
-"""
-
 
 # Function to encode the image
 def encode_image(image_path):
@@ -129,6 +111,8 @@ async def analyze_image(base64_image, api_key):
         "Authorization": f"Bearer {api_key}"
     }
 
+    streams = '\n'.join(list(map(lambda x: x['name'], THREADED_HSY_OPTIONS)))
+
     payload = {
         "model": "gpt-4-vision-preview",
         "messages": [
@@ -139,9 +123,11 @@ async def analyze_image(base64_image, api_key):
                         "type": "text",
                         "text": (
                             "You are a helpful assistant that helps to identify what can be recycled in an image. "
-                            f"Here are a list of available recycling streams: {RECYCLING_STREAMS}"
+                            f"Here are a list of available recycling streams: {streams}"
                             "\n"
-                            "You will tell what is in the image. Tell me what streams it can be separated into. Output the result as a JSON list of strings"
+                            "You will tell what is in the image. Tell me what streams it can be separated into.\n"
+                            "Output the likely streams as a JSON list of objects, "
+                            "where each object has the stream name and instructions for how to separate the part that goes in the stream from the object."
                         )
                     }
                 ]
@@ -156,7 +142,7 @@ async def analyze_image(base64_image, api_key):
                     {
                         "type": "image_url",
                         "image_url": {
-                        "url": f"data:image/jpeg;base64,{base64_image}"
+                            "url": f"data:image/jpeg;base64,{base64_image}"
                         }
                     }
                 ]
@@ -165,10 +151,17 @@ async def analyze_image(base64_image, api_key):
         "max_tokens": 300
     }
 
-    async with client.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload) as resp:
-        response = await resp.json()
+    if os.environ("DEBUG", "0") != "1":
+        async with client.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload) as resp:
+            response = await resp.json()
+            text_response = response["choices"][0]["message"]["content"].replace("\n", " ")
+    else:
+        text_response = """
+    The image shows what appears to be a lanyard, typically made of fabric or synthetic materials, with a plastic buckle and possibly a metal clasp attached to a card (likely paper or plastic) with printed information, year "2023", and possibly a QR code. Based on the materials observable, here are the potential recycling streams:\n\n```json\n[\n  {\n    "stream": "Plastic",\n    "instructions": "Separate the plastic buckle from the fabric strap if possible. Recycle as hard plastic if your local facility accepts this type of plastic."\n  },\n  {\n    "stream": "Metal",\n    "instructions": "Detach any metal parts such as clasps from the lanyard and recycle as scrap metal."\n  },\n  {\n    "stream": "Clothes, in poor condition",\n    "instructions": "If the fabric strap is not reusable and is considered in poor condition, it can be discarded as specified by local regulations for textiles."\n  },\n  {\n    "stream": "Paper",\n    "instructions": "If the card is made of paper, recycle it with paper materials."\n  },\n  {\n    "stream": "Plastic box, compartment",\n    "instructions": "If the card is made of plastic and is similar to a plastic box or compartment, follow local guidelines for recycling such plastic items."\n  }\n]\n```\n\nPlease note that recycling policies and facilities may have specific sorting rules, and it\'s best to check with your local recycling
+    """.replace("\n", " ")
 
-    return response["choices"][0]["message"]["content"].replace("json```", "").replace("```", "")
+    json_response = re.match(".*(?:json)?```(?:json)?(?P<content>.*)```.*", text_response).group("content")
+    return json_response
 
 
 def main():
@@ -203,7 +196,7 @@ def main():
                             "You are a helpful assistant that helps to identify what can be recycled in an image. "
                             f"Here are a list of available recycling streams: {RECYCLING_STREAMS}"
                             "\n"
-                            "You will tell what is in the image. Tell me what pieces it can be separated into."
+                            "You will tell what is in the image. Tell me what pieces from the available streams it can be separated into."
                         )
                     }
                 ]
@@ -229,7 +222,7 @@ def main():
 
     response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
 
-    print(response.json())
+    return response.json()
 
 
 if __name__ == "__main__":

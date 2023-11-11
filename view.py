@@ -2,11 +2,17 @@ import asyncio
 import ssl
 from flask import Flask, request
 import os
-from vision import RECYCLING_STREAMS, KIERRATYS_MATERIAL_TYPES, encode_image, analyze_image
+from vision import encode_image, analyze_image
+from hsy import THREADED_HSY_OPTIONS
 import json
 
 
 app = Flask(__name__)
+
+STREAMS = {
+    x["name"]: x["options"]
+    for x in THREADED_HSY_OPTIONS
+}
 
 @app.route("/api/vision")
 async def get_data():
@@ -23,7 +29,13 @@ async def get_data():
     data = await analyze_image(base64_image, api_key)
     data = json.loads(data)
 
-    return data
+    return [
+        {
+            "stream": d["stream"],
+            "options": STREAMS[d["stream"]],
+            "instructions": d["instructions"]
+        } for d in data if d["stream"] in STREAMS
+    ]
 
 
 if __name__ == "__main__":
