@@ -16,4 +16,6 @@ COPY . /app
 # configure the container to run in an executed manner
 ENTRYPOINT [ "python" ]
 
-CMD ["view.py" ]
+EXPOSE 8080
+
+CMD ["view.py", "--host=0.0.0.0"]
