@@ -112,6 +112,13 @@ Textiles (reusable)
 Wood
 """
 
+
+# Function to encode the image
+def encode_image(image_path):
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode('utf-8')
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--image")
@@ -120,11 +127,6 @@ def main():
     # OpenAI API Key
     with open("api_key.txt") as f:
         api_key = f.read().strip()
-
-    # Function to encode the image
-    def encode_image(image_path):
-        with open(image_path, "rb") as image_file:
-            return base64.b64encode(image_file.read()).decode('utf-8')
 
     # Path to your image
     image_path = args.image
