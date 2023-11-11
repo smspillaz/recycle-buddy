@@ -2,3 +2,4 @@ openai
 flask[async]
 requests
 aiohttp
+flask-cors
