@@ -1,4 +1,5 @@
 import base64
+import itertools
 import argparse
 import requests
 import json
@@ -95,6 +96,24 @@ KIERRATYS_MATERIAL_TYPES = {
     }
   ]
 }
+
+with open("item_classification.json", "r") as f:
+    ITEM_CLASSIFICATION_JSON = json.load(f)
+
+
+ITEM_CLASSIFICATION = [
+    {
+        "name": k,
+        "options": list(itertools.chain.from_iterable([
+            [
+                x["name"]
+                for x in v[o]
+            ]
+            for o in ["selling", "donating", "events"]
+        ]))
+    }
+    for k, v in ITEM_CLASSIFICATION_JSON.items()
+]
 
 
 # Function to encode the image
