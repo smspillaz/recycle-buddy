@@ -30,7 +30,7 @@ const ImageUpload = () => {
       // Send base64 image to the server
       try {
         const response = await fetch(
-          'http://localhost:8080/api/vision',
+          'https://junction-recycling-j4yundcgda-lz.a.run.app/api/vision',
           {
             method: 'POST',
             body: data
