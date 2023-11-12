@@ -14,8 +14,8 @@ RUN pip install -r requirements.txt
 COPY . /app
 
 # configure the container to run in an executed manner
-ENTRYPOINT [ "python" ]
+ENTRYPOINT [ "sh" ]
 
 EXPOSE 8080
 
-CMD ["view.py", "--host=0.0.0.0"]
+CMD ["server.sh"]
