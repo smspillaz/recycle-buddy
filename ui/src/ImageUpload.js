@@ -44,7 +44,7 @@ const ImageUpload = () => {
       // Send base64 image to the server
       try {
         const response = await fetch(
-          `http://localhost:5555/api/${mode}`,
+          `https://junction-recycling-j4yundcgda-lz.a.run.app/api/${mode}`,
           {
             method: 'POST',
             body: data
