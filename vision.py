@@ -6,6 +6,8 @@ import json
 import aiohttp
 import re
 import os
+import logging
+import pprint
 
 from hsy import THREADED_HSY_OPTIONS, HSY_MAIN_TYPES
 
@@ -254,6 +256,7 @@ def main():
     }
 
     response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+    logging.debug(pprint.pformat(response))
 
     return response.json()
 
